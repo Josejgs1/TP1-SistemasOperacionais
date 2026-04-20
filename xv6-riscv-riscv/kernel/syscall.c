@@ -6,6 +6,8 @@
 #include "proc.h"
 #include "syscall.h"
 #include "defs.h"
+uint syscall_count[23] = {0};
+
 
 // Fetch the uint64 at addr from the current process.
 int
@@ -138,7 +140,7 @@ syscall(void)
 
   num = p->trapframe->a7;
   if(num > 0 && num < 23)
-    p->syscall_count[num]++;
+    syscall_count[num]++;
   if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
     // Use num to lookup the system call function for num, call it,
     // and store its return value in p->trapframe->a0

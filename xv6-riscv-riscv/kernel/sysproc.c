@@ -6,6 +6,7 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "vm.h"
+extern uint syscall_count[23];
 
 uint64
 sys_exit(void)
@@ -117,5 +118,5 @@ sys_getcnt(void)
   if(syscall_num < 0 || syscall_num >= 23)
     return -1;
   
-  return myproc()->syscall_count[syscall_num];
+  return syscall_count[syscall_num];
 }

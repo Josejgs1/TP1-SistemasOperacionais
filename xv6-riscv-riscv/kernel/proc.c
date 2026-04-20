@@ -147,8 +147,6 @@ found:
   p->context.sp = p->kstack + PGSIZE;
 
   // Initialize syscall count array
-  for(int i = 0; i < 23; i++)
-    p->syscall_count[i] = 0;
 
   return p;
 }
