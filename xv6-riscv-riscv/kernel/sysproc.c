@@ -107,3 +107,15 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+uint64
+sys_getcnt(void)
+{
+  int syscall_num;
+  argint(0, &syscall_num);
+  
+  if(syscall_num < 0 || syscall_num >= 23)
+    return -1;
+  
+  return myproc()->syscall_count[syscall_num];
+}
