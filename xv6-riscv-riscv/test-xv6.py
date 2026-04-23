@@ -199,6 +199,40 @@ def test_usertests(test=""):
     q.monitor('^ALL TESTS PASSED', progress='test', timeout=timeout)
     q.stop()
 
+def test_getcnt():
+    print("Test getcnt syscall")
+
+    q = QEMU(True)
+    time.sleep(2)
+    q.read()
+
+    # Teste válido
+    q.cmd("getcnt 22\n")
+    time.sleep(2)
+    q.read()
+    q.match(r'^syscall 22 has been called [1-9][0-9]* times$')
+
+    # Teste inválido
+    q.cmd("getcnt 23\n")
+    time.sleep(2)
+    q.read()
+    q.match(r'^Error: invalid syscall number 23$')
+
+    # Gera syscall (write via echo)
+    q.cmd("echo ok\n")
+    time.sleep(2)
+    q.read()
+    q.match(r'^ok$')
+
+    # Verifica outra syscall
+    q.cmd("getcnt 16\n")
+    time.sleep(2)
+    q.read()
+    q.match(r'^syscall 16 has been called [1-9][0-9]* times$')
+
+    print("OK")
+    q.stop()
+
 def main():
     print(args)
     rex = r'%s' % args.testrex
